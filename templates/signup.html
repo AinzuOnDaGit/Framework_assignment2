@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<h2> LOGIN HERE </h2>
+<h2> SIGN UP HERE </h2>
 <form action="/login" method="POST">
 
   <div>
@@ -18,9 +18,12 @@
   </div>
 
   <div>
-    <input type="submit" value="Login">
+    <input type="submit" value="Create Account">
   </div>
 
+   <p style="text-align: center; margin-top: 1.5rem;">
+      Already have an account? <a href="{{ url_for('login') }}" style="color: #3498db;">Login</a>
+   </p>
 </form>
 
 
