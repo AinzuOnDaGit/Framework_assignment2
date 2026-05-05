@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %} {% endblock %}
+
+
+
+{% block content %}
+
+ <div class="row">
+
+  <p>Stored employee salary records (GBP).</p>
+
+  <div style="text-align:right;">
+
+   <a class="btn" href="{{ url_for('add_employee') }}">+ Add</a>
+
+  </div>
+
+ </div>
+
+
+
+ {% if employees|length == 0 %}
+
+
+ {% else %}
+
+
+
+ {% endif %}
+
+{% endblock %}
