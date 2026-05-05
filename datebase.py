@@ -11,4 +11,7 @@ def OpenConn() -> sqlite3.Connection:
 def DBSetup() -> None:
   with OpenConn() as conn:
     conn.execute("""
-CREATE TABLE IF NOT EXISTs
+CREATE TABLE IF NOT EXISTs finalProjects (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
+  description TEXT NOT NULL,
