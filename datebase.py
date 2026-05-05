@@ -1,0 +1,14 @@
+import sqlite3
+import os 
+
+DBPath = os.path.join(os.path.dirname(__file__),"usercontent.db")
+
+def OpenConn() -> sqlite3.Connection:
+  conn = sqlite3.connect(DBPath)
+  conn.row_factory = sqlite3.Row
+  return conn
+
+def DBSetup() -> None:
+  with OpenConn() as conn:
+    conn.execute("""
+CREATE TABLE IF NOT EXISTs
