@@ -18,3 +18,14 @@ CREATE TABLE IF NOT EXISTs finalProjects (
   );
                 """)
             conn.commit()
+
+def DBSetup() -> None:
+  with OpenConn() as conn:
+    conn.execute("""
+CREATE TABLE IF NOT EXISTs user_login (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  username TEXT NOT NULL,
+  password PASSWORD NOT NULl
+  );
+                """)
+            conn.commit()
