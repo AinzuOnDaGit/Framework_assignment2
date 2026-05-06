@@ -24,7 +24,7 @@
             CCCU Blog it</div>
         <div class="nav-links">            
             {% if current_user and current_user.is_authenticated %}
-                <a href="{{ url_for('create') }}">Create Post</a>
+                <a href="{{ url_for('add_post') }}">Create Post</a>
                 <a href="{{ url_for('logout') }}">Logout</a>
             {% else %}
                 <a href="{{ url_for('login') }}">Login</a>

@@ -105,5 +105,28 @@ def logout():
     flash("Logged out successfully!", "info")
     return redirect(url_for('index'))
 
+@app.route('/addPost', methods=["GET","POST"])
+def add_post():
+    if request.method == "POST":
+        title = request.form.get("title")
+        description = request.form.get("description")
+
+        if not title or not title.strip():
+            flash("title is required, error")
+            return render_template("addPost.html",title=title, description=description), 400
+        if not description or not description.strip():
+            flash("description is required, error")
+            return render_template("addPost.html",title=title, description=description), 400
+        
+        with OpenConn() as conn:
+            conn.execute(
+                "INSERT INTO finalProjects (title, description) VALUES (?,?)",
+                (title, description)
+            )
+            conn.commit()
+
+            return redirect("/")
+        return render_template("addPost.html")
+
 if __name__ == '__main__':
     app.run(debug=True)
