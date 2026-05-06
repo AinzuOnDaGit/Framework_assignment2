@@ -6,6 +6,23 @@
 
 
 <h2>Welcome to the blog</h2>
-
+<div class="card shadow p-4 rounded-2">
+<table class="table table-striped table-bordered table-hover">
+    <caption class="text-muted"> Recent Posts</caption>
+    <thead class="table-light"></thead>
+        <tr>
+            <th scope="col"> Title </th>
+            <th scope="col"> Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for post in posts %}
+        <tr>
+            <td> {{ post.title }}</td>
+            <td> {{ post.description }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 {% endblock %}

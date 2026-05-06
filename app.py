@@ -50,17 +50,22 @@ class User:
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    with OpenConn() as conn:
+        posts = conn.execute("SELECT * FROM finalProjects ORDER BY id DESC LIMIT 3").fetchall()
+    return render_template('index.html', posts=posts)
 
 #SIGN UP ROUTE 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    
+
     if request.method == 'GET':
         return render_template('signup.html')    
     username = request.form.get('username')
     password = request.form.get('password')
     
     hashed_password = generate_password_hash(password)
+    
 
     try:
         with OpenConn() as conn:
@@ -72,7 +77,7 @@ def signup():
             return redirect(url_for('login'))
     except sqlite3.IntegrityError:
             flash("Username already exists", "danger")
-            return redirect(url_for('signup'))
+            return redirect(url_for('signup',))
 
 
 
