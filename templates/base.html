@@ -19,13 +19,13 @@
     </head>
 <body>
     <nav class="navbar">
-        <div class="logo">MyBlog</div>
+        <div class="logo">CCCU Blog it</div>
         <div class="nav-links">
             <a href="{{ url_for('index') }}">Home</a>
             
             {% if current_user and current_user.is_authenticated %}
                 <a href="{{ url_for('create') }}">Create Post</a>
-                <a href="#">Logout</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
             {% else %}
                 <a href="{{ url_for('login') }}">Login</a>
                 <a href="{{ url_for('signup') }}">Sign Up</a>

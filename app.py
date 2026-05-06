@@ -1,10 +1,18 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from database import DBSetup, OpenConn
-from flask_login import LoginManager
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
 import sqlite3
 import os
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
+
+app = Flask(__name__, 
+template_folder="./templates", # define the route for pages
+)
+app.secret_key = "secretkeyforapplication"
+
+# For database 
+DBSetup()
 
 
 #for Login
@@ -21,21 +29,32 @@ def load_user(user_id):
     return None
 
 
-app = Flask(__name__, 
-template_folder="./templates", # define the route for pages
-)
-app.secret_key = "secretkeyforapplication"
+class User:
+    def __init__(self, id, username):
+        self.id = id
+        self.username = username
 
-# For database 
-DBSetup()
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return str(self.id)
+
+
 
 @app.route('/')
 def index():
-    render_template('index.html')
+    return render_template('index.html')
 
-
-@app.route('/signup', method=['GET', 'POST'])
-def signup_post():
+#SIGN UP ROUTE 
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
@@ -56,13 +75,34 @@ def signup_post():
 
     return render_template('signup.html')
 
-@app.route('/login', method=['GET', 'POST'])
-def login_post():
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
     
-    if username.is_authenticated and password.is_authenthicated:
+    with OpenConn() as conn:
+        user = conn.execute(
+        "SELECT * FROM user_login WHERE username =?",
+        (username)
+        ).fetchone()
+
+    if user and check_password_hash(user['password'], password):
+        user_check = User(user['id'], user['username'])
+        login_user(user_check)
+        flash("Logged in successfull!")
         return redirect(url_for('index'))
+    else:
+        flash("Invalid username or password", "danger")
     
 
+@app.route('/logout_post')
+def logout():
+    logout_user()
+    flash("Logged out successfully!", "info")
+    return redirect(url_for('index'))
+
+if __name__ == '__main__':
+    app.run(debug=True)
