@@ -5,5 +5,20 @@
 <h1 class="mb-3"><b> New Post </b></h1>
 
 <form action="{{ url_for('add_post') }}" method="POST" class="row g-2 needs-validation" novalidate>
+    <div class ="col-md-6">
+        <label for="titleValidation" class="form-label"> Title</label>
+        <input type="text" class="form-control" id="titleValidation" name="title" aria-describedby="titleHelp" required>
+        <div id="titleHelp" class="invalid-feedback"> Please input a Title </div>
+    </div>
+    <div class="col-md-6">
+        <label for="descriptionValidation" class="form-label"> Description</label>
+        <input type="text" class="form-control" id="descriptionValidation" name="description" aria-describedby="descriptionHelp" required>
+        <div id="descriptionHelp" class="invalid-feedback"> Please input a Description </div>
+    </div>
+    <div class="col-md-12">
+        <label for="submit" class="form-label"></label>
+        <button class="btn btn-primary" type="submit"> Submit Form </button>
+    </div>
+    </form>
 
 {% endblock %}
