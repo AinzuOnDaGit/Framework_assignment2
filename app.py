@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from database import DBSetup, OpenConn
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from werkzeug.utils import secure_filename
 
 import sqlite3
 import os
@@ -115,6 +116,7 @@ def add_post():
     if request.method == "POST":
         title = request.form.get("title")
         description = request.form.get("description")
+        image = request.files.get("image")
 
         if not title or not title.strip():
             flash("title is required, error")
@@ -123,10 +125,17 @@ def add_post():
             flash("description is required, error")
             return render_template("addPost.html",title=title, description=description), 400
         
+        image_filename = None
+        if image and image.filename:
+            filename = secure_filename(image.filename)
+            upload_path = os.path.join(app.root_path, "static", "uploads", filename)
+            image.save(upload_path)
+            image_filename = filename
+        
         with OpenConn() as conn:
             conn.execute(
-                "INSERT INTO finalProjects (title, description) VALUES (?,?)",
-                (title, description)
+                "INSERT INTO finalProjects (title, description, image_filename) VALUES (?,?,?)",
+                (title, description, image_filename)
             )
             conn.commit()
 

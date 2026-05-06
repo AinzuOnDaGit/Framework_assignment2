@@ -4,7 +4,7 @@
 <div class="card bg-light shadow p-4 rounded-3">
 <h1 class="mb-3"><b> New Post </b></h1>
 
-<form action="{{ url_for('add_post') }}" method="POST" class="row g-2 needs-validation" novalidate>
+<form action="{{ url_for('add_post') }}" method="POST" enctype="multipart/form-data" class="row g-2 needs-validation" novalidate>
     <div class ="col-md-6">
         <label for="titleValidation" class="form-label"> Title</label>
         <input type="text" class="form-control" id="titleValidation" name="title" aria-describedby="titleHelp" required>
@@ -14,6 +14,11 @@
         <label for="descriptionValidation" class="form-label"> Description</label>
         <input type="text" class="form-control" id="descriptionValidation" name="description" aria-describedby="descriptionHelp" required>
         <div id="descriptionHelp" class="invalid-feedback"> Please input a Description </div>
+    </div>
+    <div class="col-md-12">
+        <label for="imageValidation" class="form-label"> Image </label>
+        <input type="file" class="form-control" id="imageValidation" name="image" aria-describedby="imageHelp" required>
+        <div id="imageHelp" class="invalid-feedback"> Please upload a file</div>
     </div>
     <div class="col-md-12">
         <label for="submit" class="form-label"></label>
