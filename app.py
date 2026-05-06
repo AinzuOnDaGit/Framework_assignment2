@@ -55,9 +55,10 @@ def index():
 #SIGN UP ROUTE 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
+    if request.method == 'GET':
+        return render_template('signup.html')    
+    username = request.form.get('username')
+    password = request.form.get('password')
     
     hashed_password = generate_password_hash(password)
 
@@ -73,15 +74,17 @@ def signup():
             flash("Username already exists", "danger")
             return redirect(url_for('signup'))
 
-    return render_template('signup.html')
+
 
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
+    if request.method == 'GET':
+            return render_template('login.html')
+    
+    username = request.form.get('username')
+    password = request.form.get('password')
     
     with OpenConn() as conn:
         user = conn.execute(
