@@ -21,8 +21,8 @@ def DBSetup() -> None:
     conn.execute("""
 CREATE TABLE IF NOT EXISTS user_login (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  username TEXT NOT NULL,
-  password PASSWORD NOT NULl
+  username TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULl
   );
                 """)
     conn.commit()
