@@ -95,9 +95,9 @@ def login():
         login_user(user_check)
         flash("Logged in successfully!", "success")
         return redirect(url_for('index'))
-    else:
-        flash("Invalid username or password", "danger")
-        return redirect(url_for('login'))  
+
+    flash("Invalid username or password", "danger")
+    return redirect(url_for('login'))
 
 @app.route('/logout_post')
 def logout():
