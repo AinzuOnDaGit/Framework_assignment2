@@ -1,0 +1,120 @@
+Metadata-Version: 2.1
+Name: database-setup
+Version: 0.0.5
+Summary: Database setup utilities with configuration handling
+Author: Komal Swami
+Author-email: komal@neudeep.in
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pymysql
+Requires-Dist: dbutils
+Requires-Dist: PyYAML
+
+# Database Setup Package
+
+`database_setup` is a Python package designed to streamline database configuration and initialization. It supports YAML-based configuration files, database connection pooling, and utility functions for database management.
+
+## Features
+
+- Load database configurations from YAML files.
+- Create databases if they do not exist.
+- Execute schema and seed SQL files.
+- Insert default admin user with encrypted credentials.
+- Utilize connection pooling for optimized performance.
+
+## Installation
+
+Install the package via pip:
+
+```bash
+pip3 install database_setup
+```
+
+## Usage
+
+Import the Package
+
+```
+from database_setup import setup_database
+```
+
+## Setting Up a Database
+Ensure your project directory contains a config/database.yml file with the following structure:
+
+```yaml
+development:
+  host: "localhost"
+  port: 3306
+  username: "root"
+  password: "password"
+  database: "example_db"
+  autocommit: True
+  blocking: True
+  maxconnections: 5
+```
+
+Ensure the config folder contains schema.sql and seed.sql files for database schema and initial data.
+
+Run the setup_database function:
+
+setup_database('/path/to/project')
+
+Replace /path/to/project with the absolute path to your project directory.
+
+Example Database Configuration File
+config/database.yml:
+
+```yaml
+development:
+  host: "localhost"
+  port: 3306
+  username: "root"
+  password: "password"
+  database: "example_db"
+  autocommit: True
+  blocking: True
+  maxconnections: 5
+```
+Example Schema File
+config/schema.sql:
+
+```sql
+CREATE TABLE IF NOT EXISTS User (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_type VARCHAR(50),
+    name VARCHAR(100),
+    username VARCHAR(50) UNIQUE,
+    email VARCHAR(100),
+    mobile VARCHAR(15),
+    password TEXT,
+    user_access TINYINT
+);
+```
+
+Example Seed File
+config/seed.sql:
+
+```sql
+INSERT INTO User (user_type, name, username, email, mobile, password, user_access)
+VALUES ('admin', 'Default Admin', 'admin', 'info@yun.buzz', '8888888888', '<encrypted_password>', 1);
+```
+
+### Dependencies
+
+This package depends on the following libraries:
+- pymysql
+- dbutils
+- PyYAML
+
+### License
+
+This package is proprietary software and is distributed under the terms of the Proprietary License. Unauthorized redistribution or modification is prohibited. See the LICENSE file for more information.
+
+### Support
+For inquiries or support contact: Neudeep Technologies Pvt Ltd
+
+📧 neudeep.tech.pvt.ltd@gmail.com

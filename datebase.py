@@ -11,21 +11,18 @@ def OpenConn() -> sqlite3.Connection:
 def DBSetup() -> None:
   with OpenConn() as conn:
     conn.execute("""
-CREATE TABLE IF NOT EXISTs finalProjects (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  title TEXT NOT NULL,
-  description TEXT NOT NULL
-  );
-                """)
-            conn.commit()
-
-def DBSetup() -> None:
-  with OpenConn() as conn:
+      CREATE TABLE IF NOT EXISTS finalProjects (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        description TEXT NOT NULL
+      );
+  """)
+    # User table
     conn.execute("""
-CREATE TABLE IF NOT EXISTs user_login (
+CREATE TABLE IF NOT EXISTS user_login (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   username TEXT NOT NULL,
   password PASSWORD NOT NULl
   );
                 """)
-            conn.commit()
+    conn.commit()
