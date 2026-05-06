@@ -76,30 +76,28 @@ def signup():
 
 
 
-
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
-            return render_template('login.html')
+        return render_template('login.html')
     
     username = request.form.get('username')
     password = request.form.get('password')
     
     with OpenConn() as conn:
         user = conn.execute(
-        "SELECT * FROM user_login WHERE username =?",
-        (username)
+            "SELECT * FROM user_login WHERE username = ?",
+            (username,)
         ).fetchone()
 
     if user and check_password_hash(user['password'], password):
         user_check = User(user['id'], user['username'])
         login_user(user_check)
-        flash("Logged in successfull!")
+        flash("Logged in successfully!", "success")
         return redirect(url_for('index'))
     else:
         flash("Invalid username or password", "danger")
-    
+        return redirect(url_for('login'))  
 
 @app.route('/logout_post')
 def logout():
