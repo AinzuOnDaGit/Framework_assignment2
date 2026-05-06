@@ -126,7 +126,7 @@ def add_post():
             conn.commit()
 
             return redirect("/")
-        return render_template("addPost.html")
+    return render_template("addPost.html")
 
 if __name__ == '__main__':
     app.run(debug=True)
