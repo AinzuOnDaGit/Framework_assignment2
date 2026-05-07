@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from database import DBSetup, OpenConn
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.utils import secure_filename
+from datetime import datetime 
 
 import sqlite3
 import os
@@ -81,7 +82,7 @@ def signup():
             return redirect(url_for('signup',))
 
 
-
+#LOGIN ROUTE
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
@@ -105,6 +106,7 @@ def login():
     flash("Invalid username or password", "danger")
     return redirect(url_for('login'))
 
+#LOGGING OUT IF USER LOG IN
 @app.route('/logout_post')
 def logout():
     logout_user()
@@ -142,18 +144,46 @@ def add_post():
             return redirect("/")
     return render_template("addPost.html")
 
-@app.route('/post/<int:post_id>')
+
+#VIEW POST AND FULL DETAILS
+@app.route('/post/<int:post_id>', methods=['GET', 'POST'])
 def view_post(post_id):
+    if request.method == 'POST':
+        if not current_user.is_authenticated:
+            flash("Please login to comment", "warning")
+            return redirect(url_for('login'))
+        
+        comment_text = request.form.get('comment_text', '').strip()
+        if comment_text:
+            with OpenConn() as conn:
+                conn.execute(
+                    "INSERT INTO comments (post_id, user_id, text) VALUES (?, ?, ?)",
+                    (post_id, current_user.id, comment_text)
+                )
+                conn.commit()
+            flash("Comment posted successfully!", "success")
+            return redirect(url_for('view_post', post_id=post_id))
+
+    # Fetch post and comments
     with OpenConn() as conn:
         post = conn.execute("""
-            SELECT * FROM finalProjects 
-            WHERE id = ?
+            SELECT * FROM finalProjects WHERE id = ?
         """, (post_id,)).fetchone()
-    
-    
-    print("Post Data:", dict(post))
-    
-    return render_template('viewPost.html', post=post)
+        
+        comments = conn.execute("""
+            SELECT c.text, c.timestamp, u.username 
+            FROM comments c
+            JOIN user_login u ON c.user_id = u.id
+            WHERE c.post_id = ?
+            ORDER BY c.timestamp DESC
+        """, (post_id,)).fetchall()
+
+    if not post:
+        flash("Post not found", "danger")
+        return redirect(url_for('index'))
+
+    return render_template('viewPost.html', post=post, comments=comments)
+
 if __name__ == '__main__':
     app.run(debug=True)
 
