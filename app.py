@@ -142,5 +142,18 @@ def add_post():
             return redirect("/")
     return render_template("addPost.html")
 
+@app.route('/post/<int:post_id>')
+def view_post(post_id):
+    with OpenConn() as conn:
+        post = conn.execute("""
+            SELECT * FROM finalProjects 
+            WHERE id = ?
+        """, (post_id,)).fetchone()
+    
+    
+    print("Post Data:", dict(post))
+    
+    return render_template('viewPost.html', post=post)
 if __name__ == '__main__':
     app.run(debug=True)
+

@@ -17,20 +17,26 @@
             <th scope="col"> Image</th>
         </tr>
     </thead>
-    <tbody>
-        {% for post in posts %}
-        <tr>
-            <td> {{ post.title }}</td>
-            <td> {{ post.description }}</td>
-            <td>
-                {% if post.image_filename %}
-                    <img src="{{ url_for('static', filename='uploads/' ~ post.image_filename) }}"
-                    style="max-width: 300px; height: auto; border-radius: 5px;">
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
+<tbody>
+    {% for post in posts %}
+    <tr>
+        <td>
+            <a href="{{ url_for('view_post', post_id=post.id) }}" 
+               class="text-decoration-none fw-bold">
+                {{ post.title }}
+            </a>
+        </td>
+        <td>{{ post.description[:120] }}{% if post.description|length > 120 %}...{% endif %}</td>
+        <td>
+            {% if post.image_filename %}
+                <img src="{{ url_for('static', filename='uploads/' ~ post.image_filename) }}"
+                     style="max-width: 150px; height: auto; border-radius: 5px;">
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+    
 </table>
 
 {% endblock %}

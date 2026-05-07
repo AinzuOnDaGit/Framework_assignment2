@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} - CCCU Blog{% endblock %}
+
+{% block content %}
+
+<div class="card shadow p-4 rounded-3">
+
+    <h1 class="mb-4">{{ post.title }}</h1>
+
+    {% if post.image_filename %}
+        <div class="text-center mb-4">
+            <img src="{{ url_for('static', filename='uploads/' ~ post.image_filename) }}" 
+                 class="img-fluid rounded" 
+                 style="max-height: 500px; object-fit: cover; width: 100%;">
+        </div>
+    {% else %}
+        <p><em>No image available</em></p>
+    {% endif %}
+
+    <div class="mb-4">
+        <p style="font-size: 1.15rem; line-height: 1.8; white-space: pre-wrap;">
+            {{ post.description }}
+        </p>
+    </div>
+
+    <hr>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">← Back to All Posts</a>
+
+</div>
+
+{% endblock %}
