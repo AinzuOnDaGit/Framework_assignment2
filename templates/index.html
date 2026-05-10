@@ -4,7 +4,7 @@
 
 {% block content %}
 
-
+<!--View blog post in welcome page-->>
 <h2>Welcome to the blog</h2>
 <div class="card shadow p-4 rounded-2">
 <table class="table table-striped table-bordered table-hover">
@@ -17,6 +17,8 @@
             <th scope="col"> Image</th>
         </tr>
     </thead>
+
+<!--Blog posting-->
 <tbody>
     {% for post in posts %}
     <tr>
@@ -37,6 +39,9 @@
     {% endfor %}
 </tbody>
     
+
+
+</form>
 </table>
 
 {% endblock %}
