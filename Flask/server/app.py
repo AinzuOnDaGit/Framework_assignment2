@@ -131,7 +131,7 @@ def add_post():
         image_filename = None
         if image and image.filename:
             filename = secure_filename(image.filename)
-            upload_path = os.path.join(app.root_path, "static", "uploads", filename)
+            upload_path = os.path.join(app.root_path, "..","static", "uploads", filename)
             image.save(upload_path)
             image_filename = filename
         
