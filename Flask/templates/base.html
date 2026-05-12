@@ -35,8 +35,8 @@
         </div>
     </nav>
     <!--Search bar-->
-<form action="/search" method="get">
-    <input type="text" name="q" placeholder="Search">
+<form action="{{url_for('searchPosts')}}">
+    <input type="text" name="query" placeholder="Search">
     <button type="submit">Search</button>
 </form>
     <div class="main-content">

@@ -1,3 +1,4 @@
+from tkinter import SE
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from database import DBSetup, OpenConn
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
@@ -55,6 +56,13 @@ class User:
 def index():
     with OpenConn() as conn:
         posts = conn.execute("SELECT * FROM finalProjects ORDER BY id DESC LIMIT 3").fetchall()
+    return render_template('index.html', posts=posts)
+
+@app.route('/searchPosts', methods=['GET'])
+def searchPosts():
+    searchTerm = request.args.get('query').strip()
+    with OpenConn() as conn:
+        posts = conn.execute("SELECT * FROM finalProjects WHERE title LIKE ? OR description LIKE ? ORDER BY id DESC LIMIT 3", ('%' + searchTerm + '%', '%' + searchTerm + '%')).fetchall()
     return render_template('index.html', posts=posts)
 
 #SIGN UP ROUTE 
