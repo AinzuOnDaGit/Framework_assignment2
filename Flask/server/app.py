@@ -1,4 +1,3 @@
-from tkinter import SE
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from database import DBSetup, OpenConn
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
@@ -49,7 +48,6 @@ class User:
 
     def get_id(self):
         return str(self.id)
-
 
 
 @app.route('/')
