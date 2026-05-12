@@ -12,18 +12,19 @@ class MockConn:
     def __init__(self):
         self.executed = False
 
-    def is_authenticated(self):
-        return True
+    def execute(self, query, params):
+        self.executed = True
+        return None
 
-    def is_active(self):
-        return True
+    def commit(self):
+        pass
 
-    def is_anonymous(self):
-        return False
+    def __enter__(self):
+        return self  
 
-    def get_id(self):
-        return str(self.id)
-
+    def __exit__(self, exc_type, exc, tb):
+        pass
+    
 @pytest.fixture
 def client():
     app.config["TESTING"] = True
@@ -39,7 +40,6 @@ def test_get_items(client):
 def test_signup_success(client, monkeypatch):
     mock_conn = MockConn()
 
-    # Mock OpenConn so it returns our fake DB connection
     monkeypatch.setattr("app.OpenConn", lambda: mock_conn)
 
     response = client.post("/signup", data={
@@ -47,9 +47,6 @@ def test_signup_success(client, monkeypatch):
         "password": "password123"
     }, follow_redirects=False)
 
-    # Check DB insert was attempted
     assert mock_conn.executed is True
-
-    # Check redirect to login page
     assert response.status_code == 302
     assert "/login" in response.headers["Location"]
