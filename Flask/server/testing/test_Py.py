@@ -84,3 +84,36 @@ def test_login(client, monkeypatch):
 
     assert response.status_code == 302
     assert response.headers["Location"].endswith("/")
+
+#Login Test failed
+def test_fail_login(client, monkeypatch):
+    login_db = {
+        "id": 1,
+        "username": "testuser1",
+        "password": generate_password_hash("testuser1")
+    }
+
+    class MockCursor:
+      def fetchone(self):
+            return login_db
+        
+    class MockConn:
+      def __enter__(self):
+        return self  
+      
+      def __exit__(self, exc_type, exc, tb):
+        pass
+          
+      def execute(self, query, params):
+        return MockCursor()
+
+    monkeypatch.setattr("app.OpenConn", lambda: MockConn())
+
+    response = client.post("/login", data= {
+        "username" : "testuser1",
+        "password" : "testuser2"
+    }, follow_redirects=True)
+
+    assert b"Swal.fire" in response.data
+    assert b"Invalid username or password" in response.data
+    assert b"error" in response.data

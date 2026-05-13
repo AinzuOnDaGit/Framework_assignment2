@@ -107,10 +107,10 @@ def login():
     if user and check_password_hash(user['password'], password):
         user_check = User(user['id'], user['username'])
         login_user(user_check)
-        flash("Logged in successfully!", "success")
+        flash(f"Logged in successfully!", "success")
         return redirect(url_for('index'))
 
-    flash("Invalid username or password", "danger")
+    flash(f"Invalid username or password", "danger")
     return redirect(url_for('login'))
 
 #LOGGING OUT IF USER LOG IN
