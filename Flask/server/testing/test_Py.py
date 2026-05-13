@@ -4,6 +4,7 @@ import os
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
+
 # Ensure project root is in path
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
@@ -63,7 +64,10 @@ def test_login(client, monkeypatch):
 
     class MockCursor:
       def fetchone(self):
-            return login_db
+        return login_db
+      
+      def fetchall(self):
+         return []
         
     class MockConn:
       def __enter__(self):
@@ -72,7 +76,7 @@ def test_login(client, monkeypatch):
       def __exit__(self, exc_type, exc, tb):
         pass
           
-      def execute(self, query, params):
+      def execute(self, query, params=None):
         return MockCursor()
 
     monkeypatch.setattr("app.OpenConn", lambda: MockConn())
@@ -80,10 +84,12 @@ def test_login(client, monkeypatch):
     response = client.post("/login", data= {
         "username" : "testuser",
         "password" : "testuser"
-    }, follow_redirects=False)
+    }, follow_redirects=True)
 
-    assert response.status_code == 302
-    assert response.headers["Location"].endswith("/")
+    assert response.status_code == 200
+    assert b"Swal.fire" in response.data
+    assert b"Logged in successfully!" in response.data
+    assert b"success" in response.data
 
 #Login Test failed
 def test_fail_login(client, monkeypatch):
@@ -114,7 +120,28 @@ def test_fail_login(client, monkeypatch):
         "password" : "testuser2"
     }, follow_redirects=True)
 
+    assert response.status_code == 200
     assert b"Swal.fire" in response.data
     assert b"Invalid username or password" in response.data
     assert b"error" in response.data
 
+#Logging out
+def test_logout(client):
+    response = client.get("/logout_post", follow_redirects=True)
+
+    assert response.status_code == 200
+    assert b"Swal.fire" in response.data
+    assert b"Logged out successfully!" in response.data
+    assert b"info" in response.data 
+
+#Direct to post (Post on Dover)
+def test_viewPost(client):
+   response = client.get("/post/2")
+   assert response.status_code == 200
+
+#Directing to create post location
+def test_create_directory(client):
+   response = client.get("/addPost")
+
+   assert response.status_code == 200
+   assert b"New Post" in response.data 
