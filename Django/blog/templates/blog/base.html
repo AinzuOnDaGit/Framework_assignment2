@@ -20,7 +20,17 @@
             <a class="white_brand" href="{% url 'index' %}"> CCCU Blog It </a>
         </div>
         <div class="nav-links">
+            {% if user.is_authenticated %}
             <a href="{% url 'create_post' %}"> Create Post</a>
+            <!-- Djangos built in Logout view doesnt accept GET requests, so a form is used-->
+            <form method ="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button class ="btn btn-primary" type="submit"> LOGOUT</button>
+            </form>
+            {% else %}
+            <a href="{% url 'signup' %}"> Sign Up</a>
+            <a href="{% url 'login' %}"> Login</a>
+            {% endif %}
         </div>
     </nav>
     
