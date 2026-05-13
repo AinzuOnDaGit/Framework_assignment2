@@ -19,13 +19,12 @@ def index(request):
             Q(description__icontains=query)
         ).order_by('-id')
     else:
-        posts = Post.objects.order_by('id')[:3]
+        posts = Post.objects.order_by('-id')[:3]
     return render(request, "blog/index.html", {"posts": posts})
 
 def create_post(request):
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES)
-        
         if form.is_valid():
             form.save()
             return redirect("index")
