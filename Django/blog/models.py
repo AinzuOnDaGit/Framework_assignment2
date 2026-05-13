@@ -11,4 +11,4 @@ class Post(models.Model):
 # Django recommends defining __str__, provides human-readable representation of the model instance.
 # improves debugging throughout Django admin interface.
     def __str__(self):
-        return self.post.title
+        return self.title
