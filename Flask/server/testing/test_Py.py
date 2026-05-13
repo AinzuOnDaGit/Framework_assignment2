@@ -5,12 +5,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 
-# Ensure project root is in path
+# Ensure project is in path of file location
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
+#App.py importing
 from app import app
 
-#Mock for signups 
+#MockUp for signups 
 class MockConn:
     def __init__(self):
         self.executed = False
