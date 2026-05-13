@@ -23,7 +23,13 @@
             <a href="{% url 'create_post' %}"> Create Post</a>
         </div>
     </nav>
-
+    
+    <!-- Search functionality -->
+     <!-- new to figure out how to do this on here -->
+     <form method="get" action="{% url 'index' %}">
+        <input type="search" name="Filter" placeholder="Search Posts">
+        <button class ="btn btn-primary" type="submit"> Search</button>
+     </form>
 
     <div class="main-content">
         {% block content %}
