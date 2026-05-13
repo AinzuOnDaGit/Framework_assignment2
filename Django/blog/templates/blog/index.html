@@ -22,7 +22,13 @@
         <tr>
             <td> {{ post.title }} </td>
             <td> {{ post.description }} </td>
-            <td> {{ post.image_filenames }} </td>
+            <td> 
+                {% if post.image %} 
+                <img src="{{ post.image.url }}" style="max-width: 150px; height: auto;">
+                {% else %}
+                <span class="text-muted"> No image </span>
+                {% endif %}
+            </td>
         </tr>
         {% endfor %}
     </tbody>
