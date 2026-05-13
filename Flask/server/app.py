@@ -148,6 +148,7 @@ def add_post():
             )
             conn.commit()
 
+            flash(f"Post uploaded", "success")
             return redirect("/")
     return render_template("addPost.html")
 
