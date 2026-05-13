@@ -1,0 +1,35 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <div class="card bg-light shadow p-4 rounded-3">
+        <h1 class="mb-3"><b> Create Post</b></h1>
+        <form method="POST" enctype="multipart/form-data" class="row g-2 needs-validation" novalidate>
+        <!-- CSRF tokens are required for POST forms in Django 
+             Protects against Cross-site Request Forgery through ensuring
+            submissions come from this site -->
+        {% csrf_token %}
+        <!-- Automatic generation of fields, labels, inputs, validation errors
+             renders fields wrapped in <p> tags 
+            avoid manual insertion/writing of inputs -->
+            <div class="col-md-6">
+                <label class="form-label"> Title</label>
+                {{ form.title}}
+                <div class="invalid-feedback"> Please input a Title</div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label"> Description</label>
+                {{ form.description }}
+                <div class="invalid-feedback"> Please input a Description</div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label"> Image</label>
+                {{ form.image_filename }}
+                <div class="invalid-feedback"> Please upload a File </div>
+            </div>
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary"> Submit </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

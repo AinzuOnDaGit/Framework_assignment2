@@ -19,11 +19,17 @@
         <div class="logo">
             <a class="white_brand" href="{% url 'index' %}"> CCCU Blog It </a>
         </div>
+        <div class="nav-links">
+            <a href="{% url 'create_post' %}"> Create Post</a>
+        </div>
     </nav>
+
 
     <div class="main-content">
         {% block content %}
         {% endblock %}
     </div>
+
+    <script src="{% static 'bootstrap.js' %}"></script>
 </body>
 </html>
