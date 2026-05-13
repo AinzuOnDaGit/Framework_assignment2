@@ -117,3 +117,4 @@ def test_fail_login(client, monkeypatch):
     assert b"Swal.fire" in response.data
     assert b"Invalid username or password" in response.data
     assert b"error" in response.data
+
