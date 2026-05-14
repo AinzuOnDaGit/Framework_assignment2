@@ -5,6 +5,9 @@ from .forms import PostForm
 #import models inside the app
 from .models import Post
 from django.contrib.auth.forms import UserCreationForm
+# prevents crashes if an invalid id is passed
+from django.shortcuts import get_object_or_404
+from django.views.decorators.http import require_POST
 
 # Create your views here.
 def index(request):
@@ -32,6 +35,14 @@ def create_post(request):
         form = PostForm()
 
     return render(request, "blog/create.html", {"form": form})
+
+@require_POST # optional but security practice, ensures deletion isn't completed through a GET request
+def delete_post(request, post_id):
+    #delete specific blog post through id
+    post =get_object_or_404(Post,id=post_id)
+    post.delete()
+    return redirect("index")
+
 
 def signup(request):
     if request.method == "POST":

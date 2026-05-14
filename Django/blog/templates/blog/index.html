@@ -14,6 +14,7 @@
             <th scope="col"> Title</th>
             <th scope="col"> Description</th>
             <th scope="col"> Image</th>
+            <th scope="col"> Delete</th>
         </tr>
     </thead>
 
@@ -28,6 +29,13 @@
                 {% else %}
                 <span class="text-muted"> No image </span>
                 {% endif %}
+            </td>
+            <td>
+                <!-- Delete button, submits POST request to delete specified post -->
+                <form method="POST" action="{% url 'delete_post' post.id %}">
+                    {% csrf_token %}
+                    <button class="btn btn-primary btn-sm"> Delete </button>
+                </form>
             </td>
         </tr>
         {% endfor %}
