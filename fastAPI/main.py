@@ -7,6 +7,7 @@ app = FastAPI()
 # simulated database, storing posts
 posts = []
 
+
 # define what each post will contain, image_url instead of image within a database
 class Post(BaseModel):
     title: str
@@ -29,3 +30,4 @@ def create_blog_post(post: Post):
 @app.get("/blog_posts/search")
 def search_blog_posts(query: str):
     return [i for i in posts if query.lower() in i.title.lower() or query.lower() in i.description.lower()]
+
