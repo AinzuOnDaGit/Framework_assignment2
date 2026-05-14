@@ -2,7 +2,7 @@ import pytest
 import sys
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
-
+import io
 
 
 # Ensure project is in path of file location
@@ -146,3 +146,13 @@ def test_create_directory(client):
 
    assert response.status_code == 200
    assert b"New Post" in response.data 
+
+def test_create_post(client):
+   response = client.post("/addPost", data={
+      "title": "TestTitle",
+      "description": "TestDescription",
+      "image": (io.BytesIO(b"fakeimg"), "fake.png")
+   }, content_type="multipart/form-data", follow_redirects=True)
+   assert response.status_code == 200
+   assert b"TestTitle" in response.data
+   assert b"TestDescription" in response.data
